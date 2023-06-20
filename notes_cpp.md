@@ -358,5 +358,6 @@ They are particularly useful in scenarios where you have a fixed set of possible
 32. Atomic test v/s test and set 
 33. Cache line and why?
 34. structure padding 
-35. 
+35. Fastest way to read/write to files.
+36. 
 
