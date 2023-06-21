@@ -349,7 +349,7 @@ They are particularly useful in scenarios where you have a fixed set of possible
 23. TCP/IP disconnect keep-alive/ttl/buffersize/ 
 24. Memory Order
 25. Atomic Wait v/s condition variable.
-26. Decltype,declvalue, 
+26. Decltype,declvalue. DeclType is perfect return,it finds type from expression.
 27. taskset, cpu sched get, cpu sched set
 28. Thread priority, what, how, why?
 29. Static polymorphism CRTP
