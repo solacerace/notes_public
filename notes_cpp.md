@@ -322,6 +322,56 @@ By using `std::visit`, you can perform different operations or behaviors based o
 
 They are particularly useful in scenarios where you have a fixed set of possible types and want to handle each type differently `without resorting to runtime polymorphism`.
 
+
+# Consolidated Queue
+
+Assuming we know the list of tradable symbols in advance.
+
+The trading symbol on the market data update assuming it comes as an integer.
+
+We maintain two datastrcture.
+
+1. A vector of the size of the universe symbol, initialized as nullptr.
+
+mapUpdate.
+
+2. A circular buffer made up of intrusive list of size of universe symbol.
+
+cBuffer
+
+
+
+There are 2 threads in play.
+
+Thread 1: incoming Market Data thread.
+
+if ( mapUpdate[symbol] == nullptr)
+{
+     ptr = cBuffer.push(elem)
+     mapUpdate[symbol] = ptr
+}
+else
+{
+     ptr = mapUpdate[symbol]
+     *ptr = elem
+}
+
+
+Thread 2: Circular Buffer Processing thread.
+
+
+while (!cbuffer.empty())
+{
+   ptr = cbuffer.pop()
+   mapUpdate[symbol] = nullptr
+   unlock()
+   process(ptr)
+   lock()
+}
+
+
+
+
 # 4. TBD
 
 1. Make a list of questions asked in your interviews. What did you fail to answer.
