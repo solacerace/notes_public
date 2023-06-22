@@ -375,6 +375,10 @@ https://www.agner.org/optimize/optimizing_cpp.pdf
 
 Read Word sizes on 32 bit and 64 bit machines.
 
+Word size is the maximum number of bytes CPU can process at a time in one CPU cycle. on a 64bit machine it is 64 bit (or 8 byte).
+
+
+
 
 
 
