@@ -396,7 +396,7 @@ Word size is the maximum number of bytes CPU can process at a time in one CPU cy
 7. Leetcode answer all questions - write to pdf.
 8. Make notes on reading and writing to stream.
 9. Make notes on template meta programming. 
-10. Make notes on times taken by process.
+10. Make notes on times taken by various cpu operation, L1,L2,L3 access. 
 11. Make notes on L1,L2,L3 caches.
 12. Read effective series again
 13. Read reddit cpp questions
@@ -421,7 +421,14 @@ Word size is the maximum number of bytes CPU can process at a time in one CPU cy
 32. Atomic test v/s test and set 
 33. Cache line and why?
 34. structure padding 
-35. Fastest way to read/write to files.
+35. Fastest way to read/write to files. (Q)
 36. Simple TCP server and client program.
-37. Difference b/w epoll and accept based tcp server 
+37. Difference b/w epoll and accept based tcp server.
+38. Possible ways to branch, tag dispatch, if constexpr, 
+39. Matrix multiplication with memory friendly. ( the inner loop is swapped).
+40. What is the best way to measure time - RDTSP any other way (Q).
+41. Datastructure for representing list of orders in OMS.
+42. Threading model with hot path thread and auxiliary threads (Q).
+43. Thread priority and its relevance with core pinning (Q).
+44. 
 
