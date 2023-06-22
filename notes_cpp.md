@@ -369,6 +369,15 @@ while (!cbuffer.empty())
    lock()
 }
 
+# Read Agner Fog document
+
+https://www.agner.org/optimize/optimizing_cpp.pdf
+
+Read Word sizes on 32 bit and 64 bit machines.
+
+
+
+
 
 
 
