@@ -10,7 +10,8 @@
   - [3.2. Epoll](#32-epoll)
   - [3.2. Memory Order](#32-memory-order)
 - [4. Variant and visit](#4-variant-and-visit)
-- [4. TBD](#4-tbd)
+- [5. Books and Materials ](#4-books-and-materials)
+- [6. TBD](#4-tbd)
   
 # 1. Notes
 ## 1.1. B
@@ -369,7 +370,10 @@ while (!cbuffer.empty())
    lock()
 }
 
-# Read Agner Fog document
+
+# 5. Books and Materials
+
+## 5.1 Read Agner Fog document
 
 https://www.agner.org/optimize/optimizing_cpp.pdf
 
@@ -378,13 +382,13 @@ Read Word sizes on 32 bit and 64 bit machines.
 Word size is the maximum number of bytes CPU can process at a time in one CPU cycle. on a 64bit machine it is 64 bit (or 8 byte).
 
 
-# What Every Programmer Should Know About Memory
+## 5.2 What Every Programmer Should Know About Memory
 https://www.akkadia.org/drepper/cpumemory.pdf
 
 
 
 
-# 4. TBD
+# 6. TBD
 
 1. Make a list of questions asked in your interviews. What did you fail to answer.
 2. Make notes on C++20, C++17
