@@ -12,6 +12,9 @@
 - [4. Variant and visit](#4-variant-and-visit)
 - [5. Books and Materials ](#5-books-and-materials)
 - [6. TBD](#4-tbd)
+
+
+  Ring Buffer: https://rigtorp.se/ringbuffer/
   
 # 1. Notes
 ## 1.1. B
