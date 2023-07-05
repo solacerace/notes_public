@@ -4,6 +4,7 @@
   - [1.2. C](#12-c)
   - [1.3. J](#13-j)
   - [1.4. C](#14-c)
+  - [1.5. T](#14-t)
 - [2. CPP](#2-cpp)
   - [3.1. Structure Binding](#31-structure-binding)
   - [3.2. Spin Lock](#32-spin-lock)
