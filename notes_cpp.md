@@ -442,5 +442,7 @@ https://www.akkadia.org/drepper/cpumemory.pdf
 41. Datastructure for representing list of orders in OMS.
 42. Threading model with hot path thread and auxiliary threads (Q).
 43. Thread priority and its relevance with core pinning (Q).
-44. 
+44. Shared Memory and MMAP files - sample code(Q).
+45. Solare Flare - example code - ef_vi and write notes on it (Q).
+46. 
 
