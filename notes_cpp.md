@@ -370,13 +370,13 @@ else
 Thread 2: Circular Buffer Processing thread.
 
 ```
-while (!cbuffer.empty())
+while (1)
 {
-   ptr = cbuffer.pop()
+   lock()
+   ptr = cbuffer.pop() // this is blocking call
    mapUpdate[symbol] = nullptr
    unlock()
-   process(ptr)
-   lock()
+   process(ptr)   
 }
 ```
 
