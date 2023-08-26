@@ -358,12 +358,16 @@ Thread 1: incoming Market Data thread.
 if ( mapUpdate[symbol] == nullptr)
 {
      ptr = cBuffer.push(elem)
+     lock()
      mapUpdate[symbol] = ptr
+     unlock()
 }
 else
 {
+     lock()
      ptr = mapUpdate[symbol]
      *ptr = elem
+     unlock()
 }
 ```
 
@@ -372,8 +376,9 @@ Thread 2: Circular Buffer Processing thread.
 ```
 while (1)
 {
-   lock()
+   
    ptr = cbuffer.pop() // this is blocking call
+   lock()
    mapUpdate[symbol] = nullptr
    unlock()
    process(ptr)   
