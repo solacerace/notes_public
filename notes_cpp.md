@@ -354,7 +354,7 @@ cBuffer
 There are 2 threads in play.
 
 Thread 1: incoming Market Data thread.
-
+```
 if ( mapUpdate[symbol] == nullptr)
 {
      ptr = cBuffer.push(elem)
@@ -365,11 +365,11 @@ else
      ptr = mapUpdate[symbol]
      *ptr = elem
 }
-
+```
 
 Thread 2: Circular Buffer Processing thread.
 
-
+```
 while (!cbuffer.empty())
 {
    ptr = cbuffer.pop()
@@ -378,7 +378,7 @@ while (!cbuffer.empty())
    process(ptr)
    lock()
 }
-
+```
 
 # 5. Books and Materials
 
