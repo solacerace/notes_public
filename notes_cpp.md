@@ -385,6 +385,14 @@ while (1)
 }
 ```
 
+**Great implementation**
+
+Folly
+Single Producer Single Consumer: https://github.com/facebook/folly/blob/main/folly/ProducerConsumerQueue.h
+FBVector: https://github.com/facebook/folly/blob/main/folly/docs/FBVector.md
+
+
+
 # 5. Books and Materials
 
 ## 5.1 Read Agner Fog document
