@@ -11,7 +11,9 @@
 - [4. Trees](#4-trees)
   - [4.1 BFS](#41-bfs)
   - [4.2 DFS](#42-dfs)
+  - [4.3 Traversal](#43-traversal)
 
+<!-- /TOC -->
 <!-- /TOC -->
 <!-- /TOC -->(#41-bfs)
   - [4.2 DFS](#42-dfs)
@@ -130,6 +132,105 @@ int main()
 # 4. Trees
 ## 4.1 BFS
 ## 4.2 DFS
+## 4.3 Traversal
+**In Order Iterative Traversal**
+This is a standard iterative inorder traversal using stack. This can be applied to various tree problems
+```
+vector<int> isValidBST(TreeNode* root) {
+
+    /*
+    Time complexity : O(N) in the worst case
+    when the tree is BST or the "bad" element is a rightmost leaf.
+
+    Space complexity : O(N) to keep stack.
+    */
+
+    // This is a DFS solution - inorder iterative traversal
+    if (root == nullptr) return true;
+    stack<TreeNode*> st;
+    TreeNode* prev = nullptr;
+    vector<int> result;
+    while(root != nullptr || !st.empty())
+    {
+        while(root != nullptr)
+        {
+            st.push(root);
+            root = root->left;
+        }
+
+        root = st.top(); st.pop();
+        result.push_back(root->val);
+
+        prev = root;
+        root = root->right;            
+    }
+    return result;
+}
+```
+Question [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
+
+```
+    bool isValidBST(TreeNode* root) {
+
+        // https://leetcode.com/problems/validate-binary-search-tree/solutions/32112/learn-one-iterative-inorder-traversal-apply-it-to-multiple-tree-questions-java-solution/
+
+
+        /*
+        Time complexity : O(N) in the worst case
+        when the tree is BST or the "bad" element is a rightmost leaf.
+
+        Space complexity : O(N) to keep stack.
+        */
+
+        // This is a DFS solution - inorder iterative traversal
+        if (root == nullptr) return true;
+        stack<TreeNode*> st;
+        TreeNode* prev = nullptr;
+        while(root != nullptr || !st.empty())
+        {
+            while(root != nullptr)
+            {
+                st.push(root);
+                root = root->left;
+            }
+
+            root = st.top(); st.pop();
+            if (prev != nullptr && root->val <= prev->val ) return false;
+            
+            prev = root;
+            root = root->right;            
+        }
+        return true;
+    }
+```
+
+Question [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+
+```
+    int kthSmallest(TreeNode* root, int k) {
+
+        stack<TreeNode*> st;
+        while( root != nullptr || !st.empty())
+        {
+            while(root != nullptr)
+            {
+                st.push(root);
+                root = root->left;
+            }
+
+            root = st.top();
+            st.pop();
+            if (--k == 0)  break;
+
+            root = root->right;
+        }
+
+        // Assumption is k is smaller than the total number of elements
+        return root->val;
+    }
+```
+
+
 
 
 
