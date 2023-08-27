@@ -4,18 +4,20 @@
   - [1.2. C](#12-c)
   - [1.3. J](#13-j)
   - [1.4. C](#14-c)
-  - [1.5. T](#14-t)
+  - [1.5. T](#15-t)
 - [2. CPP](#2-cpp)
   - [3.1. Structure Binding](#31-structure-binding)
-  - [3.2. Spin Lock](#32-spin-lock)
   - [3.2. Epoll](#32-epoll)
-  - [3.2. Memory Order](#32-memory-order)
-- [4. Variant and visit](#4-variant-and-visit)
-- [5. Books and Materials ](#5-books-and-materials)
-- [6. TBD](#4-tbd)
-
-
-  Ring Buffer: https://rigtorp.se/ringbuffer/
+  - [3.2. Variant and visit](#32-variant-and-visit)
+- [4. Memory Order](#4-memory-order)
+  - [4.1. Spin Lock](#41-spin-lock)
+  - [4.2. Lock Free Producer Consumer](#42-lock-free-producer-consumer)
+- [5. Programming Techniques](#5-programming-techniques)
+  - [5.1 Consolidated Queue](#51-consolidated-queue)
+- [5. Books and Materials](#5-books-and-materials)
+  - [5.1 Read Agner Fog document](#51-read-agner-fog-document)
+  - [5.2 What Every Programmer Should Know About Memory](#52-what-every-programmer-should-know-about-memory)
+- [6. TBD](#6-tbd)
   
 # 1. Notes
 ## 1.1. B
@@ -53,39 +55,7 @@
 4. code: **pthread_setaffinity_np**  https://eli.thegreenplace.net/2016/c11-threads-affinity-and-hyperthreading/
 5. commandline: **taskset**: https://eli.thegreenplace.net/2016/c11-threads-affinity-and-hyperthreading/
 
-## 3.2. Spin Lock
-1. Why do we need Spin Lock?
-2. Spin Lock Implementation
-   
-Cache coherence which stands for the uniformity of shared resources data that ends up stored in multiple caches – which is what happens when we run on multiple CPUs that each processor has its own cache. so we end up with one copy in the main memory and one in the local cache of each processor that requested that data.
 
-Since there might be more than one thread spinning and trying to acquire the lock a lock of cache coherency traffic is going around to make sure all the caches are valid. We can leverage the fact the readers are less expensive since they don’t affect the state of the cache. we can wait for the lock holder to first release the lock and only then try and write to it. Switching to a test and test and set tactics. where we first test which is reading only and only then attempting to test and write and only then adding coherency traffic if we have a hint that the lock is free. We can achieve this using a nested loop.
-
-``` cpp
-class Spinlock
-{
-private:
-    std::atomic_flag atomic_flag = ATOMIC_FLAG_INIT;
-
-public:
-    void lock()
-    {
-        while (true)
-        {
-            // test and set returns oldValue & sets true
-            if (!atomic_flag.test_and_set(std::memory_order_acquire))
-            {
-                break;
-            }
-            while (atomic_flag.test(std::memory_order_relaxed));
-        }
-    }
-    void unlock()
-    {
-        atomic_flag.clear(std::memory_order_release);
-    }
-};
-```
 ## 3.2. Epoll
 
 Here's an example of an epoll-based server in C++ that can handle multiple clients concurrently:
@@ -257,9 +227,8 @@ Explanation:
 
 Note: Error handling and additional logic, such as concurrency control and signal handling, are omitted for brevity.
 
-## 3.2. Memory Order
 
-# 4. Variant and visit
+## 3.2. Variant and visit
 
 In C++, the terms "variant" and "visit" are related to the concept of sum types or tagged unions. They are typically used to represent a type that can hold values of different types, but only one value at a time.
 
@@ -333,7 +302,53 @@ By using `std::visit`, you can perform different operations or behaviors based o
 They are particularly useful in scenarios where you have a fixed set of possible types and want to handle each type differently `without resorting to runtime polymorphism`.
 
 
-# Consolidated Queue
+
+# 4. Memory Order
+
+## 4.1. Spin Lock
+1. Why do we need Spin Lock?
+2. Spin Lock Implementation
+   
+Cache coherence which stands for the uniformity of shared resources data that ends up stored in multiple caches – which is what happens when we run on multiple CPUs that each processor has its own cache. so we end up with one copy in the main memory and one in the local cache of each processor that requested that data.
+
+Since there might be more than one thread spinning and trying to acquire the lock a lock of cache coherency traffic is going around to make sure all the caches are valid. We can leverage the fact the readers are less expensive since they don’t affect the state of the cache. we can wait for the lock holder to first release the lock and only then try and write to it. Switching to a test and test and set tactics. where we first test which is reading only and only then attempting to test and write and only then adding coherency traffic if we have a hint that the lock is free. We can achieve this using a nested loop.
+
+``` cpp
+class Spinlock
+{
+private:
+    std::atomic_flag atomic_flag = ATOMIC_FLAG_INIT;
+
+public:
+    void lock()
+    {
+        while (true)
+        {
+            // test and set returns oldValue & sets true
+            if (!atomic_flag.test_and_set(std::memory_order_acquire))
+            {
+                break;
+            }
+            while (atomic_flag.test(std::memory_order_relaxed));
+        }
+    }
+    void unlock()
+    {
+        atomic_flag.clear(std::memory_order_release);
+    }
+};
+```
+
+## 4.2. Lock Free Producer Consumer
+
+Folly
+Single Producer Single Consumer: https://github.com/facebook/folly/blob/main/folly/ProducerConsumerQueue.h
+FBVector: https://github.com/facebook/folly/blob/main/folly/docs/FBVector.md
+
+
+# 5. Programming Techniques
+
+## 5.1 Consolidated Queue
 
 Assuming we know the list of tradable symbols in advance.
 
@@ -384,12 +399,6 @@ while (1)
    process(ptr)   
 }
 ```
-
-**Great implementation**
-
-Folly
-Single Producer Single Consumer: https://github.com/facebook/folly/blob/main/folly/ProducerConsumerQueue.h
-FBVector: https://github.com/facebook/folly/blob/main/folly/docs/FBVector.md
 
 
 
