@@ -12,16 +12,12 @@
   - [4.1 BFS](#41-bfs)
   - [4.2 DFS](#42-dfs)
   - [4.3 Traversal](#43-traversal)
+- [5. STL](#5-stl)
+- [5.1. lower\_bound and upper\_bound](#51-lower_bound-and-upper_bound)
 
 <!-- /TOC -->
-<!-- /TOC -->
-<!-- /TOC -->(#41-bfs)
-  - [4.2 DFS](#42-dfs)
 
-<!-- /TOC -->
-<!-- /TOC -->2-heap)
 
-<!-- /TOC -->
 
 
 # 1. Code snippet
@@ -231,8 +227,25 @@ Question [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-small
 ```
 
 
+# 5. STL
+# 5.1. lower_bound and upper_bound
 
 
+```
+value a a a b b b c c c
+index 0 1 2 3 4 5 6 7 8
+bound       l     u
+```
+Where l represents the lower bound of b, and u represents the upper bound of b.
 
+So if there are range of values that are "equal" with respect to the comparison being used, lower_bound gives you the first of this, upper_bound gives you one-past-the-end of these. This is the normal pattern of STL ranges **[first, last)**.
 
+```
+if (lower_bound() == upper_bound())
+    // then the element does not exists
+```
+
+```std::lower_bound``` - returns iterator to first element in the given range which is EQUAL_TO or Greater than val.
+
+```std::upper_bound``` - returns iterator to first element in the given range which is Greater than val.
 
