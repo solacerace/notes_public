@@ -20,11 +20,6 @@
   - [6.3. Find if path exists between two nodes.](#63-find-if-path-exists-between-two-nodes)
   - [6.4. Stack from Queues](#64-stack-from-queues)
 
-<!-- /TOC -->ological Sort.](#61-topological-sort)
-  - [6.2. Find shortest Path in Graph.](#62-find-shortest-path-in-graph)
-  - [6.3. Find if path exists between two nodes.](#63-find-if-path-exists-between-two-nodes)
-  - [6.4. Stack from Queues](#64-stack-from-queues)
-
 <!-- /TOC -->
 
 
