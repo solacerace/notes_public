@@ -14,6 +14,16 @@
   - [4.3 Traversal](#43-traversal)
 - [5. STL](#5-stl)
 - [5.1. lower\_bound and upper\_bound](#51-lower_bound-and-upper_bound)
+- [6. Some standard programs](#6-some-standard-programs)
+  - [6.1. Topological Sort.](#61-topological-sort)
+  - [6.2. Find shortest Path in Graph.](#62-find-shortest-path-in-graph)
+  - [6.3. Find if path exists between two nodes.](#63-find-if-path-exists-between-two-nodes)
+  - [6.4. Stack from Queues](#64-stack-from-queues)
+
+<!-- /TOC -->ological Sort.](#61-topological-sort)
+  - [6.2. Find shortest Path in Graph.](#62-find-shortest-path-in-graph)
+  - [6.3. Find if path exists between two nodes.](#63-find-if-path-exists-between-two-nodes)
+  - [6.4. Stack from Queues](#64-stack-from-queues)
 
 <!-- /TOC -->
 
@@ -248,4 +258,13 @@ if (lower_bound() == upper_bound())
 ```std::lower_bound``` - returns iterator to first element in the given range which is EQUAL_TO or Greater than val.
 
 ```std::upper_bound``` - returns iterator to first element in the given range which is Greater than val.
+
+
+# 6. Some standard programs
+
+## 6.1. Topological Sort.
+## 6.2. Find shortest Path in Graph.
+## 6.3. Find if path exists between two nodes.
+## 6.4. Stack from Queues
+
 
