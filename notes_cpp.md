@@ -400,6 +400,74 @@ while (1)
 }
 ```
 
+## 5.2 Intrusive List
+
+https://stackoverflow.com/questions/3361145/intrusive-lists
+
+**Boost Instrusive List**: https://www.boost.org/doc/libs/1_63_0/doc/html/intrusive/usage.html
+
+In an intrusive linked list there is no explicit 'Node' struct/class. Instead the 'Data' struct/class itself contains a next and prev pointer/reference to other Data in the linked list.
+```
+struct Data { 
+   Data *next; 
+   Data *prev; 
+   int fieldA; 
+   char * fieldB; 
+   float fieldC; 
+}  
+```
+Both the data and the next/prev pointers are located in the adjacent memory location, also if the elements to the intrusive list are sourced from std::vector or std::deque, then memory allocation/deallocation calls is minimized.
+The elements are not copied but rather taken as reference during push_back - so the memory management responsibility lies with the users.
+
+https://theboostcpplibraries.com/boost.intrusive
+Boost.Intrusive is a library especially suited for use in **high performance programs.** The library provides tools to create intrusive containers. These containers replace the known containers from the standard library. Their disadvantage is that they can’t be used as easily as, for example, std::list or std::set. But they have these advantages:
+
+- ```Intrusive containers don’t allocate memory dynamically.``` A call to push_back() doesn’t lead to a dynamic allocation with new. This is a one reason why intrusive containers can improve performance.
+- ```Intrusive containers store the original objects, not copies.``` After all, they don’t allocate memory dynamically. This leads to another advantage: Member functions such as push_back() don’t throw exceptions because they neither allocate memory nor copy objects.
+- 
+The advantages are paid for with more complicated code because preconditions must be met to store objects in intrusive containers. You cannot store objects of arbitrary types in intrusive containers. For example, you cannot put strings of type std::string in an intrusive container; instead you must use containers from the standard library.
+
+```
+#include <boost/intrusive/list.hpp>
+#include <string>
+#include <utility>
+#include <iostream>
+
+using namespace boost::intrusive;
+
+struct animal : public list_base_hook<>
+{
+  std::string name;
+  int legs;
+  animal(std::string n, int l) : name{std::move(n)}, legs{l} {}
+};
+int main()
+{
+  animal a1{"cat", 4};
+  animal a2{"shark", 0};
+  animal a3{"spider", 8};
+
+  typedef list<animal> animal_list;
+  animal_list animals;
+
+  animals.push_back(a1);
+  animals.push_back(a2);
+  animals.push_back(a3);
+
+  a1.name = "dog";
+
+  for (const animal &a : animals)
+    std::cout << a.name << '\n';
+}
+```
+
+The boost::intrusive::list_base_hook provides at least two pointers because the boost::intrusive::list is a doubly linked list. Thanks to the base class boost::intrusive::list_base_hook, animal defines these two pointers to allow objects of this type to be concatenated.
+
+
+**Object LifeTime**
+Even if the interface of boost instrusive list is similar to std::list, its usage is a bit different: You always have to keep in mind that you directly store objects in intrusive containers, not copies. The lifetime of a stored object is not bound to or managed by the container:
+- When the container gets destroyed before the object, the object is not destroyed, so you have to be careful to avoid resource leaks.
+- When the object is destroyed before the container, your program is likely to crash, because the container contains a pointer to an non-existing object.
 
 
 # 5. Books and Materials
