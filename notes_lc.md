@@ -131,7 +131,8 @@ int main()
 
 
 # 4. Trees
-## 4.1 BFS
+## 4.1 Topological Sort
+## 4.2 BFS
 
 Template - 1 : Assumption is no cycles in the graph - like an acyclic tree.
 
@@ -202,8 +203,8 @@ int BFS(Node root, Node target) {
 
 
 
-## 4.2 DFS
-## 4.3 Traversal
+## 4.3 DFS
+## 4.4 Traversal
 **In Order Iterative Traversal**
 This is a standard iterative inorder traversal using stack. This can be applied to various tree problems
 ```
