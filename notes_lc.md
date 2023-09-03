@@ -162,7 +162,10 @@ int BFS(Node root, Node target) {
 }
 ```
 
-Template - 2: Graph with cycles
+As shown in the code, in each round, the nodes in the queue are the nodes which are ```waiting to be processed```.
+After each outer while loop, we are ```one step farther from the root node```. The variable ```step``` indicates the distance from the root node and the current node we are visiting.
+
+**Template - 2: Graph with cycles**
 We introduce visited hashset here so that we don't visit the same node twice and get into infinite loop.
 
 ```
