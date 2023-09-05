@@ -219,3 +219,68 @@ a.store(4) // uses memory_order_seq_cst by default
 5.	This is also the most expensive memory order among all – due to its promise of total ordering and sequential consistency. Which means all threads have consistent view of the atomic value.  If an atomic value is X in one thread and cache would mean the same value has to be visible by all the threads and cache all this has cost associated. Whereas the same thing in release-acquire it is pair wise ordering i.e the thread which releases(stores) and the thread which acquires the same atomic variable need to have consistent view of the atomic and non-atomic variables before the store with the thread which does the acquire. Whereas the other threads can have old/stale values of the atomic(relaxed) and non-atomic values.
 
 
+
+# Synchronization in Modern C++ ( replacement for condition // pingPongAtomicFlag.cpp
+
+What we achieved through condition variable can be achieved through
+atomic_flag. 
+
+
+atomic flag provides below methods which is used.
+// it continues to wait until atomic_flag == value
+atomic_flag.wait(value) 
+
+atomic_flag.notify_one()
+
+atomic_flag.test_and_set()
+atomic_flag.clear()
+
+#include <iostream>
+#include <atomic>
+#include <thread>
+
+std::atomic_flag condAtomicFlag{};
+
+std::atomic<int> counter{};
+constexpr int countlimit = 1'000'000;
+
+void ping() {
+    while(counter <= countlimit) {
+        condAtomicFlag.wait(true);
+        condAtomicFlag.test_and_set();
+        
+        ++counter;
+        
+        condAtomicFlag.notify_one();
+    }
+}
+
+void pong() {
+    while(counter < countlimit) {
+        condAtomicFlag.wait(false);
+        condAtomicFlag.clear();
+        condAtomicFlag.notify_one();
+    }
+}
+
+int main() {
+
+     auto start = std::chrono::system_clock::now();  
+
+    
+    condAtomicFlag.test_and_set();
+    std::thread t1(ping);
+    std::thread t2(pong);
+
+    t1.join();
+    t2.join();
+
+    std::chrono::duration<double> dur = std::chrono::system_clock::now() - start;
+    std::cout << "Duration: " << dur.count() << " seconds" << std::endl;
+
+}
+
+
+'''
+
+
