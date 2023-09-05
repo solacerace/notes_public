@@ -325,10 +325,16 @@ public:
         while (true)
         {
             // test and set returns oldValue & sets true
+            // - the below condition will be true when 
+            // this thread was able to acquire 
+            // lock, i.e. test_and_set returns false.
             if (!atomic_flag.test_and_set(std::memory_order_acquire))
             {
                 break;
             }
+
+            // - test returns old value. 
+            // this will keep looping untill atomic_flag is true.
             while (atomic_flag.test(std::memory_order_relaxed));
         }
     }
