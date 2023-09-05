@@ -2,32 +2,34 @@
 
 <!-- TOC -->
 
-- [1. Code snippet](#1-code-snippet)
-  - [1.1 Initialize array](#11-initialize-array)
-  - [1.2 Numeric limits](#12-numeric-limits)
-- [2. Heap](#2-heap)
-  - [2.1 C++ Priority Queue](#21-c-priority-queue)
-- [3. Linked List](#3-linked-list)
-- [4. Trees](#4-trees)
-  - [4.1 BFS](#41-bfs)
-  - [4.2 DFS](#42-dfs)
-  - [4.3 Traversal](#43-traversal)
-- [5. STL](#5-stl)
-- [5.1. lower\_bound and upper\_bound](#51-lower_bound-and-upper_bound)
-- [6. Some standard programs](#6-some-standard-programs)
-  - [6.1. Topological Sort.](#61-topological-sort)
-  - [6.2. Find shortest Path in Graph.](#62-find-shortest-path-in-graph)
-  - [6.3. Find if path exists between two nodes.](#63-find-if-path-exists-between-two-nodes)
-  - [6.4. Stack from Queues](#64-stack-from-queues)
+- [Code snippet](#code-snippet)
+  - [Initialize array](#initialize-array)
+  - [Numeric limits](#numeric-limits)
+- [Heap](#heap)
+  - [C++ Priority Queue](#c-priority-queue)
+- [Linked List](#linked-list)
+- [Trees](#trees)
+  - [Topological Sort](#topological-sort)
+  - [BFS](#bfs)
+  - [DFS](#dfs)
+  - [Traversal](#traversal)
+- [STL](#stl)
+- [lower\_bound and upper\_bound](#lower_bound-and-upper_bound)
+- [Some standard programs](#some-standard-programs)
+  - [Topological Sort.](#topological-sort-1)
+  - [Find shortest Path in Graph.](#find-shortest-path-in-graph)
+  - [Find if path exists between two nodes.](#find-if-path-exists-between-two-nodes)
+  - [Stack from Queues](#stack-from-queues)
+  - [Shared pointer and Unique Pointer code](#shared-pointer-and-unique-pointer-code)
 
 <!-- /TOC -->
 
 
 
 
-# 1. Code snippet
+# Code snippet
 
-## 1.1 Initialize array
+## Initialize array
 
 * 1D array to zero
 ```
@@ -42,7 +44,7 @@ vector<int> arr(N,0);
 vector<vector<bool>> dp(M, vector<bool>(N, false));
 ```
 
-## 1.2 Numeric limits
+## Numeric limits
 
 ```
 #include <limits>
@@ -58,9 +60,9 @@ std::numeric_limits<unsigned int>::max()  //  4,294,967,295
 ```
 
 
-# 2. Heap
+# Heap
 
-## 2.1 C++ Priority Queue
+## C++ Priority Queue
 By default the c++ priority queue is **MaxPriorityQueue **of **Max Heap**
 https://en.cppreference.com/w/cpp/container/priority_queue
 ```
@@ -127,12 +129,14 @@ int main()
 
 
 
-# 3. Linked List
+# Linked List
 
 
-# 4. Trees
-## 4.1 Topological Sort
-## 4.2 BFS
+# Trees
+
+## Topological Sort
+
+## BFS
 
 Template - 1 : Assumption is no cycles in the graph - like an acyclic tree.
 
@@ -203,8 +207,9 @@ int BFS(Node root, Node target) {
 
 
 
-## 4.3 DFS
-## 4.4 Traversal
+## DFS
+
+## Traversal
 **In Order Iterative Traversal**
 This is a standard iterative inorder traversal using stack. This can be applied to various tree problems
 ```
@@ -303,8 +308,9 @@ Question [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-small
 ```
 
 
-# 5. STL
-# 5.1. lower_bound and upper_bound
+# STL
+
+# lower_bound and upper_bound
 
 
 ```
@@ -326,11 +332,101 @@ if (lower_bound() == upper_bound())
 ```std::upper_bound``` - returns iterator to first element in the given range which is Greater than val.
 
 
-# 6. Some standard programs
+# Some standard programs
 
-## 6.1. Topological Sort.
-## 6.2. Find shortest Path in Graph.
-## 6.3. Find if path exists between two nodes.
-## 6.4. Stack from Queues
+## Topological Sort.
+
+## Find shortest Path in Graph.
+
+## Find if path exists between two nodes.
+
+## Stack from Queues
+
+## Shared pointer and Unique Pointer code
+
+**Unique Ptr**
+```
+namespace ThorsAnvil {
+    template<typename T>
+// UNIQUE POINTER
+    class UP {              
+            T*   data;
+        public: 
+  // Explicit constructor
+            explicit UP(T* data) : data(data) {}
+            ~UP() {
+                delete data;
+            }
+   // Remove compiler generated methods.
+            UP(UP const&)            = delete;    
+    // Remove compiler generated methods.
+            UP& operator=(UP const&) = delete;      
+    // Const correct access owned object
+            T* operator->() const {return data;}     
+    // Const correct access owned object
+            T& operator*()  const {return *data;}    
+    // Access to smart pointer state
+            T* get()                 const {return data;}     
+            explicit operator bool() const {return data;}
+           // Modify object state
+            T* release() {                       
+                T* result = nullptr;
+                std::swap(result, data);
+                return result;
+            }
+    };
+}
+```
+
+**shared_ptr** code
+```
+namespace ThorsAnvil {
+    template<typename T>
+    class SP {        //SHARED POINTER 
+        T*      data;
+        int*    count;
+        public:
+            explicit SP(T* data) // Explicit constructor
+            try                 : data(data), count(new int(1)) {}
+            catch(...) {
+                // If we failed because of an exception delete the pointer and rethrow the exception.
+                delete data;
+                throw;
+            }
+            ~SP()  {
+                --(*count);
+                if (*count == 0)  {
+                    delete data;
+                }
+            }
+            SP(SP const& copy)  : data(copy.data), count(copy.count)  {
+                ++(*count);
+            }
+            // Use the copy and swap idiom, It works perfectly for this situation.
+            SP& operator=(SP rhs)  {
+                rhs.swap(*this);
+                return *this;
+            }
+            SP& operator=(T* newData)  {
+                SP tmp(newData);
+                tmp.swap(*this);
+                return *this;
+            }
+// Always good to have a swap function, make sure it is noexcept
+            void swap(SP& other) noexcept {
+                std::swap(data, other.data);
+                std::swap(count, other.count);
+            }
+            // Const correct access owned object
+            T* operator->() const {return data;}
+            T& operator*() const {return *data;}
+ 
+            // Access to smart pointer state
+            T* get()                 const {  return data;  }
+            explicit operator bool() const {return data;}
+        };
+}
+
+```
 
 

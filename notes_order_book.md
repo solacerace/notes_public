@@ -1,10 +1,25 @@
 
-<!-- TOC -->
+<!-- TOC -->- [1. Github itch-order-book](#1-github-itch-order-book)
+- [1. Github itch-order-book](#1-github-itch-order-book)
+- [2. Custom Memory Pool](#2-custom-memory-pool)
+- [3. Data Structures/Class](#3-data-structuresclass)
+- [4. Design Alternatives](#4-design-alternatives)
+- [5. Design Nitty Gritty](#5-design-nitty-gritty)
+- [6. Pseudo Code](#6-pseudo-code)
+  - [6.1. add\_order](#61-add_order)
+  - [6.2. execute\_order (order\_id\_t oid, qty\_t qty)](#62-execute_order-order_id_t-oid-qty_t-qty)
+  - [6.3. reduce\_order(order\_id\_t const oid, qty\_t const qty)](#63-reduce_orderorder_id_t-const-oid-qty_t-const-qty)
+  - [6.4. delete\_order(order\_id\_t const oid)](#64-delete_orderorder_id_t-const-oid)
+  - [6.5. replace\_order(order\_id\_t const old\_oid, order\_id\_t const new\_oid,qty\_t const new\_qty, sprice\_t new\_price)](#65-replace_orderorder_id_t-const-old_oid-order_id_t-const-new_oidqty_t-const-new_qty-sprice_t-new_price)
+- [7. Internal Methods](#7-internal-methods)
+  - [7.1. DELETE\_ORDER](#71-delete_order)
+  - [7.2. REDUCE\_ORDER](#72-reduce_order)
+
 
 
 <!-- /TOC -->
 
-# Github itch-order-book
+# 1. Github itch-order-book
 
 1.	Orders are maintained in Vector indexed by order id. Orders contain reference to Level. So an order update can directly index Level object and update the qty
 2.	Level maintains the aggregated price and qty.
@@ -12,7 +27,7 @@
 
 
 
-# 2.	Custom Memory Pool
+# 2. Custom Memory Pool
  
 It uses two custom memory pools
  
@@ -26,7 +41,7 @@ static constexpr size_t NUM_LEVELS = 1 << 20;
 using level_vector = pool<level, level_id_t, NUM_LEVELS>; 
 
 
-# 3.	Data Structures/Class
+# 3. Data Structures/Class
  
  
 **1.	Order**
@@ -69,7 +84,7 @@ sorted_levels_t m_bids;
 The Object life cycle is managed by vector.
 
 
-# 3.	Design Alternatives
+# 4. Design Alternatives
  
 I've discussed the Order Book design using three below techniques. Each has its own strength and weakness.
  
@@ -88,15 +103,15 @@ o	Else
 •	Insert the LevelPool[order.price] in the sorted intrusive list.  // LINEAR time complexity
  
 
-# 4. Design Nitty Gritty
+# 5. Design Nitty Gritty
 1.	Prices are sorted in descending order from the end, with the highest price taking the first position at the end and then others.
 2.	For the offer/sell – we multiply by the price by -1, thus the best offer becomes the highest value and occupies first position at the end. 
 
 
 
-# 5.	Pseudo Code 
+# 6. Pseudo Code 
 
-## 5.1 add_order
+## 6.1. add_order
 ``` 
 1.	Get an Order object from oidmap
 2.	Set the Qty
@@ -158,7 +173,7 @@ break;
 
 
 
-##  5.2 execute_order (order_id_t oid, qty_t qty)
+##  6.2. execute_order (order_id_t oid, qty_t qty)
 1.	Get the order corresponding to the order id
 2.	If (qty == order->m_qty) // If the whole order qty is executed.
 a.	DELETE_ORDER(order)
@@ -182,15 +197,15 @@ a.	REDUCE_ORDER(order, qty)
   }
 
 ```
-## 5.3 reduce_order(order_id_t const oid, qty_t const qty)
+## 6.3. reduce_order(order_id_t const oid, qty_t const qty)
 REDUCE_ORDER(order, qty);
 
 
-## 5.4 delete_order(order_id_t const oid)
+## 6.4. delete_order(order_id_t const oid)
 
 DELETE_ORDER(order);
 
-## 5.5 replace_order(order_id_t const old_oid, order_id_t const new_oid,qty_t const new_qty, sprice_t new_price)
+## 6.5. replace_order(order_id_t const old_oid, order_id_t const new_oid,qty_t const new_qty, sprice_t new_price)
 ```
 -	Get the old order from OrderMap
 -	Delete the order
@@ -205,9 +220,9 @@ DELETE_ORDER(order);
 -	    book->add_order(new_oid, order->book_idx, new_price, new_qty);
 ```                            
 
-# 6.	Internal Methods
+# 7. Internal Methods
 
-## 6.1 DELETE_ORDER
+## 7.1. DELETE_ORDER
 ```
 // shared between delete and execute
 DELETE_ORDER(order_t *order)
@@ -245,7 +260,7 @@ c.	delete the level from the level pool.
 
 
 
-## 6.1 REDUCE_ORDER
+## 7.2. REDUCE_ORDER
 
   // shared between cancel(aka partial cancel aka reduce) and execute
   void REDUCE_ORDER(order_t *order, qty_t const qty)
