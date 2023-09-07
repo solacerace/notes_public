@@ -475,6 +475,15 @@ Even if the interface of boost instrusive list is similar to std::list, its usag
 - When the container gets destroyed before the object, the object is not destroyed, so you have to be careful to avoid resource leaks.
 - When the object is destroyed before the container, your program is likely to crash, because the container contains a pointer to an non-existing object.
 
+# Concepts
+To Be Read
+
+https://www.jakubkonka.com/2017/09/02/type-traits-cpp.html
+https://www.cppstories.com/2022/const-options-cpp20/
+https://www.cppstories.com/2018/03/ifconstexpr/
+https://en.cppreference.com/w/cpp/header/type_traits
+https://en.cppreference.com/w/cpp/concepts
+
 
 # 5. Books and Materials
 
