@@ -42,10 +42,17 @@
 1. Print all permutations NpR
 2. Some question on Tree 
 
-## 1.5. T
+## 1.5. Tudor
 1. Implement Order book from order feed - ANS - always suggest using Intrusive containers.
 2. What is PUT-Call Parity -
 3. Implement Quoter/Hedger
+
+
+## 1.5. HRT
+1. Memory allocation - access out of bound memory - what happens?
+2. Order Rate - control rate of order per second - 20 Orders/second. How would you implement can_send_order();
+3. Virtual table - vptr
+
 
 # 2. CPP
 ## 3.1. Structure Binding
