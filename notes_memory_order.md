@@ -9,6 +9,7 @@
 - [4. Core Pinning](#4-core-pinning)
 - [5. Measurement of Time RDTSC](#5-measurement-of-time-rdtsc)
 - [6. Memory Order](#6-memory-order)
+- [7. Synchronization in Modern C++ ( replacement for condition // pingPongAtomicFlag.cpp](#7-synchronization-in-modern-c--replacement-for-condition--pingpongatomicflagcpp)
 
 
 # 1. Cache Coherency
@@ -220,20 +221,27 @@ a.store(4) // uses memory_order_seq_cst by default
 
 
 
-# Synchronization in Modern C++ ( replacement for condition // pingPongAtomicFlag.cpp
+# 7. Synchronization in Modern C++ ( replacement for condition // pingPongAtomicFlag.cpp
 
-What we achieved through condition variable can be achieved through
-atomic_flag. 
+Learned from here.
+[Learned from here](https://www.modernescpp.com/index.php/performancecomparison-of-condition-variables-and-atomics-in-c-20/)
+
+What we achieved through condition variable in past can be achieved through atomic_flag in Modern C++. 
 
 
 atomic flag provides below methods which is used.
-// it continues to wait until atomic_flag == value
-atomic_flag.wait(value) 
+- atomic_flag.wait(value) : it continues to wait until atomic_flag == value
 
-atomic_flag.notify_one()
+- atomic_flag.notify_one() : 
 
-atomic_flag.test_and_set()
-atomic_flag.clear()
+- atomic_flag.test_and_set() : Return old value and set to true.
+
+- atomic_flag.clear()  : Clear the earlier set value - (same as setting it to false)
+
+
+
+```
+// pingPongAtomicFlag.cpp
 
 #include <iostream>
 #include <atomic>
@@ -246,6 +254,8 @@ constexpr int countlimit = 1'000'000;
 
 void ping() {
     while(counter <= countlimit) {
+
+        // wait/blocks until the flag is true
         condAtomicFlag.wait(true);
         condAtomicFlag.test_and_set();
         
@@ -257,6 +267,8 @@ void ping() {
 
 void pong() {
     while(counter < countlimit) {
+
+        // wait/blocks until the flag is false
         condAtomicFlag.wait(false);
         condAtomicFlag.clear();
         condAtomicFlag.notify_one();
@@ -281,6 +293,4 @@ int main() {
 }
 
 
-'''
-
-
+```
