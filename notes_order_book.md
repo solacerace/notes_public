@@ -14,6 +14,10 @@
 - [7. Internal Methods](#7-internal-methods)
   - [7.1. DELETE\_ORDER](#71-delete_order)
   - [7.2. REDUCE\_ORDER](#72-reduce_order)
+- [8. Questions](#8-questions)
+  - [8.1. What optimization can you do if books are thick( too many orders at same level but few levels)](#81-what-optimization-can-you-do-if-books-are-thick-too-many-orders-at-same-level-but-few-levels)
+  - [8.2. What optimization can you do for books are deep (too many levels)](#82-what-optimization-can-you-do-for-books-are-deep-too-many-levels)
+  - [8.3. What if i have unlimited memory - can you imporove add order performance.](#83-what-if-i-have-unlimited-memory---can-you-imporove-add-order-performance)
 
 
 
@@ -280,6 +284,14 @@ c.	delete the level from the level pool.
 -	  }
 
 ```
+
+
+# 8. Questions
+## 8.1. What optimization can you do if books are thick( too many orders at same level but few levels)
+## 8.2. What optimization can you do for books are deep (too many levels)
+
+## 8.3. What if i have unlimited memory - can you imporove add order performance.
+
 
 
 
