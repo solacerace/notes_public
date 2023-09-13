@@ -4,9 +4,11 @@
   - [1.2. C](#12-c)
   - [1.3. J](#13-j)
   - [1.4. C](#14-c)
-  - [1.5. T](#15-t)
+  - [1.5. Tudor](#15-tudor)
+  - [1.5. HRT](#15-hrt)
 - [2. CPP](#2-cpp)
-  - [3.1. Structure Binding](#31-structure-binding)
+  - [3.1. Structure Padding](#31-structure-padding)
+  - [3.2. Structure Binding](#32-structure-binding)
   - [3.2. Epoll](#32-epoll)
   - [3.2. Variant and visit](#32-variant-and-visit)
 - [4. Memory Order](#4-memory-order)
@@ -14,6 +16,8 @@
   - [4.2. Lock Free Producer Consumer](#42-lock-free-producer-consumer)
 - [5. Programming Techniques](#5-programming-techniques)
   - [5.1 Consolidated Queue](#51-consolidated-queue)
+  - [5.2 Intrusive List](#52-intrusive-list)
+- [Concepts](#concepts)
 - [5. Books and Materials](#5-books-and-materials)
   - [5.1 Read Agner Fog document](#51-read-agner-fog-document)
   - [5.2 What Every Programmer Should Know About Memory](#52-what-every-programmer-should-know-about-memory)
@@ -55,7 +59,14 @@
 
 
 # 2. CPP
-## 3.1. Structure Binding
+
+## 3.1. Structure Padding
+
+The size of the structure not only depends on the sum of member variable size.
+ 
+
+
+## 3.2. Structure Binding
 1. What is the command to measure the tcp route a tcp connection takes from source to destination.
 2. Did you use any thread operation introduced in C++14 - like future/promise and what was the use case.
 3. How do you bind a thread to a cpu core? - explain the shell command and code as well.
