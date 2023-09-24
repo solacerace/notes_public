@@ -2,7 +2,7 @@
 - [2. Implement order throttle program.](#2-implement-order-throttle-program)
 - [3. Implement serializer and deserializer of array of int.](#3-implement-serializer-and-deserializer-of-array-of-int)
 - [4. Market is moving fast as option market maker how do you adjust passive open position.](#4-market-is-moving-fast-as-option-market-maker-how-do-you-adjust-passive-open-position)
-- [5. How do you implement tick size correction on the prices?](#5-how-do-you-implement-tick-size-correction-on-the-prices)
+- [5. How do I implement tick size correction on the prices?](#5-how-do-i-implement-tick-size-correction-on-the-prices)
 - [6. Data structure to handle addition/deletion in middle](#6-data-structure-to-handle-additiondeletion-in-middle)
 - [7. How-do-I-sort-a-very-large-file-with-a-limited-amount-of-memory](#7-how-do-i-sort-a-very-large-file-with-a-limited-amount-of-memory)
 
@@ -87,7 +87,7 @@ and viceversa based on the datatype.
 # 4. Market is moving fast as option market maker how do you adjust passive open position.
 
 
-# 5. How do you implement tick size correction on the prices?
+# 5. How do I implement tick size correction on the prices?
 
 
 ```
