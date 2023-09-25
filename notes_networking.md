@@ -85,6 +85,11 @@ else if ( (len == -1) && (EAGAIN == errno || errno == EWOULDBLOCK) )
 
 ## 2.3. EPoll Timer loop how to
 
+1. Create a timer_fd
+2. Add to the epoll_ctl and register EPOLLIN
+3. When the event is generated for timer_fd - read the data - so that it knows the event is actioned.
+4. Do the required task - if any
+5. go back to the epoll_wait loop.
 
 ## 2.3. Simple EPoll Server Single Threaded
 
@@ -93,23 +98,6 @@ else if ( (len == -1) && (EAGAIN == errno || errno == EWOULDBLOCK) )
 3. When you get the callback from the epoll_wait check if its for EPOLLOUT.. then send the remaining data.
 4. If the callback is to read the data, then read the data.
 5. Set the mask again based on if you want to listen for read or write data. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
