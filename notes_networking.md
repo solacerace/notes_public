@@ -101,5 +101,7 @@ else if ( (len == -1) && (EAGAIN == errno || errno == EWOULDBLOCK) )
 
 
 
+## EventFD notify 
 
+https://www.yangyang.cloud/blog/2018/11/09/worker-pool-with-eventfd/
 
