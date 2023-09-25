@@ -105,3 +105,25 @@ else if ( (len == -1) && (EAGAIN == errno || errno == EWOULDBLOCK) )
 
 https://www.yangyang.cloud/blog/2018/11/09/worker-pool-with-eventfd/
 
+static void *producer_routine(void *data) {
+    struct thread_info *p = (struct thread_info *)data;
+    struct epoll_event event;
+    int epfd = p->epfd;
+    int efd = -1;
+    int ret = -1;
+    int interval = 1;
+
+    log_debug("[producer-%d] issues 1 task per %d second", p->rank, interval);
+    while (1) {
+        efd = eventfd(0, EFD_CLOEXEC | EFD_NONBLOCK);
+        if (efd == -1) exit_error("eventfd create: %s", strerror(errno));
+        event.data.fd = efd;
+        event.events = EPOLLIN | EPOLLET;
+        ret = epoll_ctl(epfd, EPOLL_CTL_ADD, efd, &event);
+        if (ret != 0) exit_error("epoll_ctl");
+        ret = write(efd, &(uint64_t){1}, sizeof(uint64_t));
+        if (ret != 8) log_error("[producer-%d] failed to write eventfd", p->rank);
+        sleep(interval);
+    }
+}
+
