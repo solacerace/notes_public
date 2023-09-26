@@ -13,8 +13,9 @@
   - [3.1. EventFD notify](#31-eventfd-notify)
 - [4. UDP Server Client](#4-udp-server-client)
 - [5. EPOLL Based Server client](#5-epoll-based-server-client)
-- [Setting socket to be non-blocking](#setting-socket-to-be-non-blocking)
-- [Epoll example code](#epoll-example-code)
+- [6. Setting socket to be non-blocking](#6-setting-socket-to-be-non-blocking)
+- [7. Epoll example code](#7-epoll-example-code)
+- [8. ways to detect various TCP condition when the peer host.](#8-ways-to-detect-various-tcp-condition-when-the-peer-host)
 
 
 # 1. TCP v/s UDP latency
@@ -154,7 +155,7 @@ Addition to the diagram
 - When recv receives 0 len data. The client connection needs to be closed.
 - 
 
-# Setting socket to be non-blocking
+# 6. Setting socket to be non-blocking
 
 
 ```
@@ -169,11 +170,16 @@ static int setnonblocking(int sockfd)
 }
 ```
 
-# Epoll example code
+# 7. Epoll example code
 
 https://github.com/solacerace/epoll-example/blob/master/epoll.c
 
 
 https://github.com/solacerace/epollServer/tree/master/src
+
+
+# 8. ways to detect various TCP condition when the peer host.
+
+![Alt text](image-3.png)
 
 
