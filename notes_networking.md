@@ -13,6 +13,7 @@
   - [3.1. EventFD notify](#31-eventfd-notify)
 - [4. UDP Server Client](#4-udp-server-client)
 - [5. EPOLL Based Server client](#5-epoll-based-server-client)
+- [Setting socket to be non-blocking](#setting-socket-to-be-non-blocking)
 
 
 # 1. TCP v/s UDP latency
@@ -151,4 +152,19 @@ https://stackoverflow.com/questions/66916835/c-confused-by-epoll-and-socket-fd-o
 Addition to the diagram
 - When recv receives 0 len data. The client connection needs to be closed.
 - 
+
+# Setting socket to be non-blocking
+
+
+```
+static int setnonblocking(int sockfd)
+{
+    // Get the file descriptor and set it.
+	if (fcntl(sockfd, F_SETFD, fcntl(sockfd, F_GETFD, 0) | O_NONBLOCK) ==
+	    -1) {
+		return -1;
+	}
+	return 0;
+}
+```
 
