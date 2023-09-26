@@ -9,6 +9,9 @@
   - [2.2. EPoll Level Triggered vs Edge Triggered](#22-epoll-level-triggered-vs-edge-triggered)
   - [2.3. EPoll Timer loop how to](#23-epoll-timer-loop-how-to)
   - [2.3. Simple EPoll Server Single Threaded](#23-simple-epoll-server-single-threaded)
+- [TCP Server Client](#tcp-server-client)
+- [UDP Server Client](#udp-server-client)
+- [EPOLL Based Server client](#epoll-based-server-client)
 
 
 # 1. TCP v/s UDP latency
@@ -101,5 +104,26 @@ else if ( (len == -1) && (EAGAIN == errno || errno == EWOULDBLOCK) )
 
 
 
+# TCP Server Client
+![Alt text](image.png)
 
+
+# UDP Server Client
+
+https://stackoverflow.com/questions/23068905/is-bind-necessary-if-i-want-to-receive-data-from-a-server-using-udp
+
+
+![Alt text](image-1.png)
+
+
+# EPOLL Based Server client
+
+https://stackoverflow.com/questions/66916835/c-confused-by-epoll-and-socket-fd-on-linux-systems-and-async-threads
+
+
+![Alt text](image-2.png)
+
+Addition to the diagram
+- When recv receives 0 len data. The client connection needs to be closed.
+- 
 
