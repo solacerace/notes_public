@@ -5,13 +5,14 @@
   - [2.1. Epoll advanatges](#21-epoll-advanatges)
   - [2.2. EPoll loop based server and Client](#22-epoll-loop-based-server-and-client)
   - [2.3. EPoll Events to know and listen for](#23-epoll-events-to-know-and-listen-for)
-  - [2.3. EPoll Read/Write errno](#23-epoll-readwrite-errno)
-  - [2.2. EPoll Level Triggered vs Edge Triggered](#22-epoll-level-triggered-vs-edge-triggered)
-  - [2.3. EPoll Timer loop how to](#23-epoll-timer-loop-how-to)
-  - [2.3. Simple EPoll Server Single Threaded](#23-simple-epoll-server-single-threaded)
-- [TCP Server Client](#tcp-server-client)
-- [UDP Server Client](#udp-server-client)
-- [EPOLL Based Server client](#epoll-based-server-client)
+  - [2.4. EPoll Read/Write errno](#24-epoll-readwrite-errno)
+  - [2.5. EPoll Level Triggered vs Edge Triggered](#25-epoll-level-triggered-vs-edge-triggered)
+  - [2.6. EPoll Timer loop how to](#26-epoll-timer-loop-how-to)
+  - [2.7. Simple EPoll Server Single Threaded](#27-simple-epoll-server-single-threaded)
+- [3. TCP Server Client](#3-tcp-server-client)
+  - [3.1. EventFD notify](#31-eventfd-notify)
+- [4. UDP Server Client](#4-udp-server-client)
+- [5. EPOLL Based Server client](#5-epoll-based-server-client)
 
 
 # 1. TCP v/s UDP latency
@@ -31,7 +32,7 @@ EPOLLERR| EPOLLRDHUP | EPOLLHUP |
 EpollIn connection: EPOLLIN 
 EpollOut connection: EPOLLOUT
 
-## 2.3. EPoll Read/Write errno
+## 2.4. EPoll Read/Write errno
 
 EAGAIN, EWOULDBLOCK, ECONNRESET, EINTR
 
@@ -84,9 +85,9 @@ else if ( (len == -1) && (EAGAIN == errno || errno == EWOULDBLOCK) )
 
 ```
 
-## 2.2. EPoll Level Triggered vs Edge Triggered
+## 2.5. EPoll Level Triggered vs Edge Triggered
 
-## 2.3. EPoll Timer loop how to
+## 2.6. EPoll Timer loop how to
 
 1. Create a timer_fd
 2. Add to the epoll_ctl and register EPOLLIN
@@ -94,7 +95,7 @@ else if ( (len == -1) && (EAGAIN == errno || errno == EWOULDBLOCK) )
 4. Do the required task - if any
 5. go back to the epoll_wait loop.
 
-## 2.3. Simple EPoll Server Single Threaded
+## 2.7. Simple EPoll Server Single Threaded
 
 1. Listen for incoming connection or incoming read
 2. When read.. read the data and write back to the socket. If Write fails or not enough space in buffer. Go back and listen but this time register the EPOLLOUT so that as soon as the write is ready you will get callback.
@@ -104,11 +105,35 @@ else if ( (len == -1) && (EAGAIN == errno || errno == EWOULDBLOCK) )
 
 
 
-# TCP Server Client
+# 3. TCP Server Client
 ![Alt text](image.png)
+## 3.1. EventFD notify 
 
+https://www.yangyang.cloud/blog/2018/11/09/worker-pool-with-eventfd/
 
-# UDP Server Client
+static void *producer_routine(void *data) {
+    struct thread_info *p = (struct thread_info *)data;
+    struct epoll_event event;
+    int epfd = p->epfd;
+    int efd = -1;
+    int ret = -1;
+    int interval = 1;
+
+    log_debug("[producer-%d] issues 1 task per %d second", p->rank, interval);
+    while (1) {
+        efd = eventfd(0, EFD_CLOEXEC | EFD_NONBLOCK);
+        if (efd == -1) exit_error("eventfd create: %s", strerror(errno));
+        event.data.fd = efd;
+        event.events = EPOLLIN | EPOLLET;
+        ret = epoll_ctl(epfd, EPOLL_CTL_ADD, efd, &event);
+        if (ret != 0) exit_error("epoll_ctl");
+        ret = write(efd, &(uint64_t){1}, sizeof(uint64_t));
+        if (ret != 8) log_error("[producer-%d] failed to write eventfd", p->rank);
+        sleep(interval);
+    }
+}
+
+# 4. UDP Server Client
 
 https://stackoverflow.com/questions/23068905/is-bind-necessary-if-i-want-to-receive-data-from-a-server-using-udp
 
@@ -116,7 +141,7 @@ https://stackoverflow.com/questions/23068905/is-bind-necessary-if-i-want-to-rece
 ![Alt text](image-1.png)
 
 
-# EPOLL Based Server client
+# 5. EPOLL Based Server client
 
 https://stackoverflow.com/questions/66916835/c-confused-by-epoll-and-socket-fd-on-linux-systems-and-async-threads
 
