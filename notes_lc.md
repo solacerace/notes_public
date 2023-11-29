@@ -429,4 +429,69 @@ namespace ThorsAnvil {
 
 ```
 
+## Circular Buffer
+
+Wikipedia has very good explanation: https://en.wikipedia.org/wiki/Circular_buffer
+
+In this implementation N-1 elements are contained in the list.
+
+```
+#include <stdio.h>
+
+enum { N = 10 };
+
+int buffer[N]; // Note that N-1 is the actual capacity, see put function
+int writeIdx = readIdx = 0;
+
+
+
+
+
+enum { N = 10 };  // N elements of the circular buffer
+
+int buffer [N];   // Note that N-1 is the actual capacity, see put function
+int writeIndx = 0;
+int readIndx  = 0;
+
+int put (int item) 
+{
+  if ((writeIndx + 1) % N == readIndx)
+  {
+     // buffer is full, avoid overflow
+     return 0;
+  }
+  buffer[writeIndx] = item;
+  writeIndx = (writeIndx + 1) % N;
+  return 1;
+}
+
+int get (int * value) 
+{
+  if (readIndx == writeIndx)
+  {
+     // buffer is empty
+     return 0;
+  }
+
+  *value = buffer[readIndx];
+  readIndx = (readIndx + 1) % N;
+  return 1;
+}
+
+int main ()
+{
+  // test circular buffer
+  int value = 1001;
+  while (put (value ++));
+  while (get (& value))
+     printf ("read %d\n", value);
+  return 0;
+}
+```
+
+
+
+
+
+
 
